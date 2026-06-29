@@ -51,15 +51,6 @@ Data, checkpoints, and results are bind-mounted from the host (`./data`, `./chec
 | `onlinetas` | Online Temporal Action Segmentation |
 | `HASR` | Hierarchical Action Segmentation Refiner |
 
-## Supported Datasets
-
-- **MockDataset** — synthetic colored-frame dataset for pipeline testing (generated locally)
-- **ImPerfectPour** — pouring task dataset
-- **JIGSAWS** — robotic surgery suturing/knot-tying
-- **REASSEMBLE / REASSEMBLEmm** — assembly task dataset
-- **IRIS** — surgical task dataset
-- **50Salads** — cooking activity dataset
-
 ## Feature Types
 
 | Flag | Description | Dim |
