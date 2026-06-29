@@ -1,6 +1,6 @@
 # ASL Segmentation library
 
-A ROS/Catkin package for Temporal Action Segmentation (TAS) in surgical and assembly task domains. Supports training and evaluation of multiple state-of-the-art TAS models with various feature types.
+A ROS/Catkin package for Temporal Action Segmentation (TAS). Supports training and evaluation of multiple state-of-the-art TAS models with various feature types.
 
 ## Setup
 
