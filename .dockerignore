@@ -1,0 +1,28 @@
+# ── runtime outputs (never needed in image) ────────────────────────────────
+data/
+checkpoints/
+results/
+wandb/
+exp/
+
+# ── raw video files at project root ────────────────────────────────────────
+vids_*/
+ImPerfectPour_BRPOAF_50_vids/
+*.mp4
+*.avi
+*.mkv
+
+# ── BridgePrompt: fully bind-mounted at runtime, skip entire 5 GB ──────────
+models/BridgePrompt/
+
+# ── Python cache / build artefacts ─────────────────────────────────────────
+__pycache__/
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+.git/
+*.egg-info/
+dist/
+build/
+.pytest_cache/
+tmp/

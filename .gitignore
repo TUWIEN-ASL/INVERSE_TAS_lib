@@ -1,0 +1,47 @@
+# Secrets
+.env
+
+# IDE
+.vscode
+
+# Python
+*.egg-info
+**/__pycache__
+
+# Model artifacts
+**.model
+**.opt
+**.prm
+**.pth
+**.pt
+**.gz
+
+# Large binaries
+**.zip
+**.mp4
+
+# Data and outputs
+data/
+exp/
+res/
+results/*/
+checkpoints/*/
+tmp/
+
+# Generated video output directories
+vids_*/
+*_vids/
+
+# Experiment tracking
+wandb/
+
+# Generated config directories (auto-created by scripts)
+configs/ASRF/in_channel-*/
+
+# Dump/log files
+dump*.txt
+
+# Misc output
+prio_based/
+output_vid.mp4
+*.csv

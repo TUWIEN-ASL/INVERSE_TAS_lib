@@ -1,0 +1,49 @@
+services:
+  training:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - NVIDIA_VISIBLE_DEVICES=all
+      - NVIDIA_DRIVER_CAPABILITIES=compute,utility
+      - PROJECT_PATH=/workspace
+      # Set WANDB_API_KEY in a .env file or export it before running
+      - WANDB_API_KEY=${WANDB_API_KEY:-}
+    volumes:
+      - ./data:/workspace/data
+      - ./checkpoints:/workspace/checkpoints
+      - ./results:/workspace/results
+      - ./scripts:/workspace/scripts
+      - ./configs:/workspace/configs
+      - ./models/BridgePrompt:/workspace/models/BridgePrompt
+      # Symlink targets — mounted at the same absolute paths so symlinks inside data/ resolve correctly
+      - /home/dsliwowski/datasets:/home/dsliwowski/datasets
+      - /home/dsliwowski/Projects/UMR2_old/data:/home/dsliwowski/Projects/UMR2_old/data
+    shm_size: '16gb'
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+    # Override on the CLI: docker compose run training --model ASFormer --dataset JIGSAWS
+    command:
+      - --model=mstcn
+      - --dataset=REASSEMBLEmm
+      - --split=1
+      - --f_type=M2R2_features_demo_prio
+      - --oaf_type=
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PROJECT_PATH=/workspace
+      - WANDB_API_KEY=disabled          # prevent accidental W&B uploads during testing
+    volumes:
+      - ./data:/workspace/data
+    shm_size: '4gb'
+    entrypoint: ["python", "-m", "pytest"]
+    command: ["tests/", "-v", "--tb=short"]

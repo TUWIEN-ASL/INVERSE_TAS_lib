@@ -1,0 +1,39 @@
+pretrain: ""   # set to your fine-tuned BridgePrompt checkpoint, or leave empty for zero-shot
+seed: 1024
+data:
+    dataset: MockDataset
+    modality: RGB
+    num_frames: 32
+    seg_length: 1
+    split: 1
+    batch_size: 8
+    workers: 4
+    num_classes: 4
+    index_bias: 1
+    input_size: 224
+    save_dir: '../../data/MockDataset/brp_raw'
+    # Paths used by SegDataset_FRAMES (else branch in extract_frame_features.py)
+    root:      '../../data/MockDataset'
+    frame_dir: '../../data/MockDataset/frames'
+    label_dir: '../../data/MockDataset/annotations'
+    class_dir: '../../data/MockDataset/mapping.json'
+    randaug:
+        N: 0
+        M: 0
+network:
+    arch: ViT-B/16
+    init: True
+    drop_out: 0.0
+    emb_dropout: 0.0
+    if_proj: False
+    partial_bn: False
+    version: ''
+    bn_momentum: 0.1
+    consensus_type: avg
+    type: clip_ucf
+    sim_header: "Transf"
+    fix_text: False
+    fix_img: False
+logging:
+    print_freq: 10
+    eval_freq: 1

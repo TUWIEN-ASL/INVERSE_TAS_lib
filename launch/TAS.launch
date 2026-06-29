@@ -1,0 +1,69 @@
+<?xml version="1.0" ?>
+<launch>
+	<!-- Args -->
+	<arg name="record"           default="true"/>	
+	<!-- which topics to save -->
+    <arg name="topic"  	    		default="
+											/cam1/image_raw/compressed
+											/cam2/image_raw/compressed
+											/camera/color/image_raw/compressed" />
+	<!-- Where to save the rosbags -->
+	<arg name="base_path"           default="path_to_data_folder"/>	
+)
+	<arg name="f_type"           default="I3D"/>
+	<arg name="segmentation_model"           default="mstcn"/>	
+	<arg name="device"           default="cuda:0"/>	
+	<arg name="stack_size"           default="21"/>	
+	<arg name="step_size"           default="1"/>	
+	<arg name="brp_config_path"           default="/home/ws/catkin/src/inverse_tas/configs/BRP/test/test_exfm.yaml"/>	
+	<arg name="segmentation_config_path"           default=""/>	
+	<arg name="segmentation_weights_path"           default="/home/ws/catkin/src/inverse_tas/checkpoints/mstcn/test/split_0/epoch-1.model"/>	
+	<arg name="num_classes"           default="13"/>	
+	<arg name="mapping_file"           default="/home/ws/catkin/src/inverse_tas/data/test/mapping.txt"/>
+
+	<node name="recorder" pkg="inverse_tas" type="record_manager.py" output="screen" if="$(arg record)">
+		<param name="base_path" value="$(arg base_path)" />
+		<param name="topic" value="$(arg topic)" />
+	</node>
+
+	<node name="predictor" pkg="inverse_tas" type="deploy_TAS.py" output="screen" unless="$(arg record)">
+		<param name="base_path" value="$(arg base_path)" />
+		<param name="topic" value="$(arg topic)" />
+		<param name="f_type"                    value="$(arg f_type)"/>
+		<param name="segmentation_model"        value="$(arg segmentation_model)"/>	
+		<param name="device"                    value="$(arg device)"/>	
+		<param name="stack_size"                value="$(arg stack_size)"/>	
+		<param name="step_size"                 value="$(arg step_size)"/>	
+		<param name="brp_config_path"           value="$(arg brp_config_path)"/>	
+		<param name="segmentation_config_path"  value="$(arg segmentation_config_path)"/>	
+		<param name="segmentation_weights_path" value="$(arg segmentation_weights_path)"/>	
+		<param name="num_classes"               value="$(arg num_classes)"/>	
+		<param name="mapping_file"               value="$(arg mapping_file)"/>	
+	</node>
+
+	<!-- examples of how to set up different cameras, either the path can be used or the symlinks in /dev/video* -->
+	<node name="hama1" pkg="usb_cam" type="usb_cam_node" output="screen" >
+		<param name="video_device" value="/dev/v4l/by-path/pci-0000:0b:00.0-usb-0:1.1.1:1.0-video-index0" />
+		<param name="image_width" value="640" />
+		<param name="image_height" value="480" />
+		<param name="pixel_format" value="yuyv" />
+		<param name="camera_frame_id" value="cam1" />
+		<param name="io_method" value="mmap"/>
+  	</node>
+
+	<!-- <node name="hama2" pkg="usb_cam" type="usb_cam_node" output="screen" >
+		<param name="video_device" value="/dev/v4l/by-path/pci-0000:0a:00.0-usb-0:1.1.1:1.0-video-index0" />
+		<param name="image_width" value="640" />
+		<param name="image_height" value="480" />
+		<param name="pixel_format" value="yuyv" />
+		<param name="camera_frame_id" value="cam2" />
+		<param name="io_method" value="mmap"/>
+  	</node>
+
+	<include file="$(find realsense2_camera)/launch/rs_camera.launch">
+		<arg name="color_width" value="640" />
+		<arg name="color_height" value="480" />
+		<arg name="color_fps" value="30" />
+		<arg name="enable_depth" value="false" />
+	</include> -->
+</launch>
